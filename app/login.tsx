@@ -1,15 +1,20 @@
 import { Button } from "@/components/Button";
 import { ThemedView } from "@/components/ThemedView";
-import { Image, Text } from "react-native";
+import { Image, Text, View } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { Input } from "@/components/Input";
 import { useState } from "react";
 import { useColorScheme } from "react-native";
+import { HorizontalLine } from "@/components/HorizontalLine";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { router } from "expo-router";
 
 export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordShown, setPasswordVisible] = useState(false);
 
   async function handleLogin() {
     if (email && password) {
@@ -26,7 +31,7 @@ export default function Login() {
       }).then(async (res) => {
         const data = await res.json();
         if (res.status === 200) {
-          alert("Login realizado com sucesso!");
+          router.navigate("/chat");
         } else {
           setError(data.message);
         }
@@ -47,6 +52,7 @@ export default function Login() {
       <ThemedText type="title" className="scale-125 mt-10 font-bold">
         Login
       </ThemedText>
+      <HorizontalLine />
       <ThemedText type="label" className="text-left w-4/5 mb-1 mt-4">
         Email
       </ThemedText>
@@ -54,13 +60,33 @@ export default function Login() {
       <ThemedText type="label" className="text-left w-4/5 mb-1 mt-4">
         Senha
       </ThemedText>
-      <Input secure value={password} setValue={setPassword} className="w-4/5" />
+      <Input
+        secure={!passwordShown}
+        value={password}
+        setValue={setPassword}
+        className="w-4/5"
+      />
+      <View className="w-4/5 flex flex-row my-3">
+        <BouncyCheckbox
+          onPress={(pressed) => {
+            setPasswordVisible(pressed);
+          }}
+          fillColor={useThemeColor("primary")}
+        />
+        <Text
+          style={{ color: useThemeColor("text-secondary") }}
+          className="font-medium text-xl my-auto -ml-2"
+        >
+          Mostrar senha
+        </Text>
+      </View>
       <Button
         onPress={() => handleLogin()}
         width={200}
-        className="mt-10"
+        className="mt-4"
         title="Entrar"
       />
+
       {error && (
         <Text className="text-2xl font-semibold text-red-600 mt-3">
           {error}

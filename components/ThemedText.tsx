@@ -3,6 +3,7 @@ import { Text, type TextProps, StyleSheet } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
 export type ThemedTextProps = TextProps & {
+  fontSize?: number;
   type?:
     | "default"
     | "title"
@@ -14,6 +15,7 @@ export type ThemedTextProps = TextProps & {
 
 export function ThemedText({
   style,
+  fontSize,
   type = "default",
   className,
   ...rest
@@ -31,6 +33,7 @@ export function ThemedText({
         type === "link" ? styles.link : undefined,
         type === "label" ? styles.label : undefined,
         style,
+        fontSize !== undefined && { fontSize: fontSize },
       ]}
       className={className}
       {...rest}

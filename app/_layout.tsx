@@ -5,7 +5,8 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import * as SplashScreen from "expo-splash-screen";
 import "../global.css";
 import { Header } from "@/components/Header";
-import { ThemedView } from "@/components/ThemedView";
+import { router } from "expo-router";
+import { useColorScheme } from "react-native";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -22,15 +23,21 @@ export default function RootLayout() {
 
   const headerBackgroundColor = useThemeColor("foreground");
 
+  const backButtonShown = router.canGoBack();
+
   if (!loaded && !error) {
     return null;
   }
 
   return (
     <Stack
-      initialRouteName="login"
       screenOptions={{
-        headerTitle: (props) => <Header {...props} />,
+        headerBackVisible: false,
+        headerBackButtonMenuEnabled: false,
+        statusBarColor: "#011F3B",
+        headerTitle: (props) => (
+          <Header backButtonShown={backButtonShown} {...props} />
+        ),
         headerStyle: {
           backgroundColor: headerBackgroundColor,
         },
@@ -39,6 +46,7 @@ export default function RootLayout() {
     >
       <Stack.Screen name="index" />
       <Stack.Screen name="login" options={{ headerShown: false }} />
+      <Stack.Screen name="chat" />
     </Stack>
   );
 }
