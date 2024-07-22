@@ -23,8 +23,6 @@ export default function RootLayout() {
 
   const headerBackgroundColor = useThemeColor("foreground");
 
-  const backButtonShown = router.canGoBack();
-
   if (!loaded && !error) {
     return null;
   }
@@ -35,16 +33,14 @@ export default function RootLayout() {
         headerBackVisible: false,
         headerBackButtonMenuEnabled: false,
         statusBarColor: "#011F3B",
-        headerTitle: (props) => (
-          <Header backButtonShown={backButtonShown} {...props} />
-        ),
+        headerTitle: (props) => <Header {...props} />,
         headerStyle: {
           backgroundColor: headerBackgroundColor,
         },
         headerTintColor: "#fff",
       }}
     >
-      <Stack.Screen name="index" />
+      <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="chat" />
     </Stack>

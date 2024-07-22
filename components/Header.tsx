@@ -1,25 +1,21 @@
-import { Image, View, Text, Pressable, TouchableOpacity } from "react-native";
+import { Image, View, Text, TouchableOpacity } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { useColorScheme } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { router } from "expo-router";
+import { useThemeMascot } from "@/hooks/useThemeMascot";
 
 const routeNames: { [key: string]: string } = {
   chat: "Chatbot",
 };
 
-export function Header(props: {
-  children: string;
-  tintColor?: string;
-  backButtonShown: boolean;
-}) {
-  
-  //TODO: Resolver bug do backButton
+export function Header(props: { children: string; tintColor?: string }) {
+  const backButtonColor = useThemeColor("text-2");
+  const backButtonShown = router.canGoBack();
 
   return (
     <View className="flex flex-row p-2">
-      {props.backButtonShown === true && (
+      {backButtonShown === true && (
         <TouchableOpacity
           onPress={() => {
             router.back();
@@ -28,7 +24,7 @@ export function Header(props: {
         >
           <FontAwesomeIcon
             style={{ marginVertical: "auto" }}
-            color={useThemeColor("text-2")}
+            color={backButtonColor}
             size={25}
             icon={faArrowLeft}
           />
@@ -36,14 +32,10 @@ export function Header(props: {
       )}
       <Image
         className="w-10 h-12 aspect-[7/10] my-2"
-        source={
-          useColorScheme() == "light"
-            ? require("../assets/images/logo-branca.png")
-            : require("../assets/images/logo-preta.png")
-        }
+        source={useThemeMascot()}
       />
       <Text
-        className="my-auto ml-4 text-2xl"
+        className="ml-4 text-2xl my-auto"
         style={{
           color: useThemeColor("text-2"),
           fontFamily: "Nunito_Semibold",

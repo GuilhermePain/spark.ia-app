@@ -15,6 +15,7 @@ export function Input(props: {
       placeholderTextColor="#aaa"
       secureTextEntry={props.secure}
       cursorColor={useThemeColor("primary")}
+      selectionColor={useThemeColor("primary-focus")}
       onChangeText={(text) => props.setValue && props.setValue(text)}
       value={props.value}
       style={{

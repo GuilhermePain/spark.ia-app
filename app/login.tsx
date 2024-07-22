@@ -4,11 +4,11 @@ import { Image, Text, View } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { Input } from "@/components/Input";
 import { useState } from "react";
-import { useColorScheme } from "react-native";
 import { HorizontalLine } from "@/components/HorizontalLine";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { router } from "expo-router";
+import { useThemeMascot } from "@/hooks/useThemeMascot";
 
 export default function Login() {
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +18,7 @@ export default function Login() {
 
   async function handleLogin() {
     if (email && password) {
-      fetch("http://10.0.0.102:3001/api/autenticar", {
+      fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/autenticar`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,6 +31,7 @@ export default function Login() {
       }).then(async (res) => {
         const data = await res.json();
         if (res.status === 200) {
+          setError("");
           router.navigate("/chat");
         } else {
           setError(data.message);
@@ -43,11 +44,7 @@ export default function Login() {
     <ThemedView style={{ alignItems: "center" }}>
       <Image
         className="w-32 h-32 mt-20 aspect-[7/10] my-2"
-        source={
-          useColorScheme() != "light"
-            ? require("../assets/images/logo-branca.png")
-            : require("../assets/images/logo-preta.png")
-        }
+        source={useThemeMascot(true)}
       />
       <ThemedText type="title" className="scale-125 mt-10 font-bold">
         Login

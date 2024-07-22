@@ -4,6 +4,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 
 export type ThemedTextProps = TextProps & {
   fontSize?: number;
+  centered?: boolean;
   type?:
     | "default"
     | "title"
@@ -18,6 +19,7 @@ export function ThemedText({
   fontSize,
   type = "default",
   className,
+  centered,
   ...rest
 }: ThemedTextProps) {
   const color = useThemeColor("text");
@@ -25,6 +27,7 @@ export function ThemedText({
   return (
     <Text
       style={[
+        centered && { marginHorizontal: "auto" },
         { color },
         type === "default" ? styles.default : undefined,
         type === "title" ? styles.title : undefined,

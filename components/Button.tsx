@@ -30,8 +30,9 @@ export function Button(props: {
         <Text
           style={{
             color: "white",
+            margin: "auto",
           }}
-          className="m-auto p-3 w-fit text-[1.75rem] font-bold text-center"
+          className="p-3 w-fit text-[1.75rem] font-bold text-center"
         >
           {props.title}
           {props.icon && (

@@ -1,19 +1,49 @@
-import { Image, useColorScheme, View } from "react-native";
+import { Image, View } from "react-native";
 import { ThemedText } from "./ThemedText";
+import { useThemeMascot } from "@/hooks/useThemeMascot";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import Animated, {
+  useSharedValue,
+  withTiming,
+  Easing,
+  withRepeat,
+  withSequence,
+} from "react-native-reanimated";
+import { useEffect } from "react";
+import { TypewriterText } from "./TypewriterText";
 
-export function Message(props: { sender: "spark" | string; content: string }) {
-  const darkMode = useColorScheme();
+export type MessageProps = {
+  sender: "spark" | string;
+  content?: string;
+  loading?: boolean;
+};
+
+export function Message(props: MessageProps) {
+  const textColor = useThemeColor("text");
+  const mascotImage = useThemeMascot(true);
+  const userImage = require("../assets/images/user-placeholder.jpg");
+  const size = useSharedValue(1);
+  const animationConfig = {
+    duration: 700,
+    easing: Easing.inOut(Easing.ease),
+  };
   let image;
-  if (props.sender === "spark") {
-    image =
-      darkMode === "light"
-        ? require("../assets/images/logo-preta.png")
-        : require("../assets/images/logo-branca.png");
-  } else {
-    image = require("../assets/images/user-placeholder.jpg");
-  }
+  if (props.sender === "spark") image = mascotImage;
+  else image = userImage;
+
+  useEffect(() => {
+    size.value = withRepeat(
+      withSequence(
+        withTiming(1, animationConfig),
+        withTiming(1.5, animationConfig)
+      ),
+      -1,
+      true
+    );
+  }, []);
+
   return (
-    <View className="text-left h-fit w-11/12 pr-10 mx-auto mt-2">
+    <View className="mx-auto text-left h-fit w-11/12 pr-10 mt-2">
       <View className="flex flex-row">
         <Image
           className={`${
@@ -29,13 +59,33 @@ export function Message(props: { sender: "spark" | string; content: string }) {
           >
             {props.sender}
           </ThemedText>
-          <ThemedText
-            className="text-wrap break-all h-fit"
-            fontSize={18}
-            type="default"
-          >
-            {props.content}
-          </ThemedText>
+          <View style={{ minHeight: 24 }}>
+            {props.loading && (
+              <Animated.View
+                className="rounded-full my-auto"
+                style={[
+                  {
+                    width: 12,
+                    height: 12,
+                    transform: [{ scale: size }],
+                    backgroundColor: textColor,
+                  },
+                ]}
+              />
+            )}
+            {!props.loading && props.sender !== "spark" && (
+              <ThemedText
+                className="break-all h-fit"
+                fontSize={18}
+                type="default"
+              >
+                {props.content}
+              </ThemedText>
+            )}
+            {!props.loading && props.sender === "spark" && (
+              <TypewriterText content={props.content} />
+            )}
+          </View>
         </View>
       </View>
     </View>
