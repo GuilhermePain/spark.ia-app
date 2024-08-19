@@ -26,10 +26,10 @@ export default function Login() {
         body: JSON.stringify({
           email: email,
           senha: password,
-          mobile: true,
         }),
       }).then(async (res) => {
         const data = await res.json();
+        console.log(data);
         if (res.status === 200) {
           setError("");
           router.navigate("/chat");

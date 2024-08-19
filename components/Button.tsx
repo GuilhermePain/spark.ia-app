@@ -10,6 +10,7 @@ export function Button(props: {
   height?: number;
   onPress?: Function;
   className?: string;
+  hollow?: boolean;
 }) {
   return (
     <View
@@ -23,13 +24,19 @@ export function Button(props: {
           height: props.height,
         }}
         android_ripple={{
-          color: useThemeColor("primary-focus"),
+          color: !props.hollow
+            ? useThemeColor("primary-focus")
+            : "rgba(253, 173, 11, 0.1)",
         }}
-        className="min-h-12 w-32 bg-primary disabled:bg-gray-500"
+        className={`min-h-12 w-32 ${
+          props.hollow
+            ? "border-2 dark:border-white border-primary rounded-2xl"
+            : "bg-primary"
+        } disabled:bg-gray-500`}
       >
         <Text
           style={{
-            color: "white",
+            color: props.hollow ? useThemeColor("hollow-button-text") : "white",
             margin: "auto",
           }}
           className="p-3 w-fit text-[1.75rem] font-bold text-center"

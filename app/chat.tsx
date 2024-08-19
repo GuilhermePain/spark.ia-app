@@ -44,8 +44,10 @@ export default function Chat() {
       fetch(
         `${process.env.EXPO_PUBLIC_API_URL}/api/perguntar/${encodeURIComponent(
           prompt
-        )}`
+        )}`,
+        { method: "POST" }
       ).then(async (res) => {
+        console.log(res);
         const data = await res.json();
         if (res.status === 200) {
           const cleanData = data

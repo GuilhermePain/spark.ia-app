@@ -5,6 +5,9 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
+      borderColor: {
+        primary: "#FA7807",
+      },
       colors: {
         primary: "#FA7807",
         "primary-focus": "#FDAD0B",
@@ -21,7 +24,6 @@ module.exports = {
       semibold: "Nunito_Semibold",
       bold: "Nunito_Bold",
     },
-    extend: {},
   },
   plugins: [],
 };

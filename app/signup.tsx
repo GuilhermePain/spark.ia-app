@@ -29,9 +29,11 @@ export default function Login() {
       if (password !== confirmPassword) {
         return setError("Suas senhas não estão iguais!");
       }
+
       if (password.length < 8) {
         return setError("Sua senha deve conter pelo menos 8 caracteres!");
       }
+
       fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/novousuario`, {
         method: "POST",
         headers: {

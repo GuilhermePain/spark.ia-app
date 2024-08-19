@@ -5,8 +5,6 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import * as SplashScreen from "expo-splash-screen";
 import "../global.css";
 import { Header } from "@/components/Header";
-import { router } from "expo-router";
-import { useColorScheme } from "react-native";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -43,6 +41,8 @@ export default function RootLayout() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="signup" options={{ headerShown: false }} />
+      <Stack.Screen name="home" options={{ title: "Boas vidas estudante!" }} />
+      <Stack.Screen name="flashcard" options={{ title: "História" }} />
       <Stack.Screen name="chat" />
     </Stack>
   );

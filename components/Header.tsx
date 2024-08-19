@@ -7,6 +7,8 @@ import { useThemeMascot } from "@/hooks/useThemeMascot";
 
 const routeNames: { [key: string]: string } = {
   chat: "Chatbot",
+  flashcard: "Flashcard",
+  "flashcard-list": "Flashcards",
 };
 
 export function Header(props: { children: string; tintColor?: string }) {
