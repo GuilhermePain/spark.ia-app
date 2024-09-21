@@ -1,14 +1,9 @@
-import { Button } from "@/components/Button";
-import { ThemedView } from "@/components/ThemedView";
-import { Image, Text, View } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
-import { Input } from "@/components/Input";
 import { useState } from "react";
-import { HorizontalLine } from "@/components/HorizontalLine";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { router } from "expo-router";
+import { router } from "@/router";
+import { ThemedView, ThemedText, Image, HorizontalLine, Input, View, Text, Button, Checkbox } from "@/components";
 import { useThemeMascot } from "@/hooks/useThemeMascot";
+import handleSignUp from "@/functions/handleSignup";
 
 export default function Login() {
   const [error, setError] = useState<string | null>(null);
@@ -23,40 +18,6 @@ export default function Login() {
     setEmail("");
     setConfirmPassword("");
     setPassword("");
-  }
-  async function handleSignUp() {
-    if (email && password && confirmPassword && name) {
-      if (password !== confirmPassword) {
-        return setError("Suas senhas não estão iguais!");
-      }
-
-      if (password.length < 8) {
-        return setError("Sua senha deve conter pelo menos 8 caracteres!");
-      }
-
-      fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/novousuario`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nome: name,
-          email: email,
-          senha: password,
-          confirmarsenha: password,
-          mobile: true,
-        }),
-      }).then(async (res) => {
-        const data = await res.json();
-        if (res.status === 200) {
-          resetForm();
-          setError("");
-          router.navigate("/login");
-        } else {
-          setError(data.message);
-        }
-      });
-    }
   }
 
   return (
@@ -96,7 +57,7 @@ export default function Login() {
         className="w-4/5"
       />
       <View className="w-4/5 flex flex-row my-3">
-        <BouncyCheckbox
+        <Checkbox
           onPress={(pressed) => {
             setPasswordVisible(pressed);
           }}
@@ -110,7 +71,7 @@ export default function Login() {
         </Text>
       </View>
       <Button
-        onPress={() => handleSignUp()}
+        onPress={() => handleSignUp(email, password, confirmPassword, name, setError, resetForm)}
         width={200}
         className="mt-2"
         title="Registrar"

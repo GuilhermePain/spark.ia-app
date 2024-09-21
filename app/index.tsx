@@ -1,5 +1,5 @@
-import { Redirect } from "expo-router";
+import { Redirect } from "@/router";
 
 export default function Index() {
-  return <Redirect href="/flashcard-list" />;
+  return <Redirect href="/login" />;
 }

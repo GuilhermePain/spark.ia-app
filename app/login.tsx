@@ -1,44 +1,15 @@
-import { Button } from "@/components/Button";
-import { ThemedView } from "@/components/ThemedView";
-import { Image, Text, View } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
-import { Input } from "@/components/Input";
 import { useState } from "react";
-import { HorizontalLine } from "@/components/HorizontalLine";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { router } from "expo-router";
+import { router } from "@/router";
 import { useThemeMascot } from "@/hooks/useThemeMascot";
+import { Button, HorizontalLine, ThemedText, ThemedView, Input, Text, Image, View, Checkbox } from "@/components";
+import handleLogin from "@/functions/handleLogin";
 
 export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordVisible] = useState(false);
-
-  async function handleLogin() {
-    if (email && password) {
-      fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/autenticar`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          senha: password,
-        }),
-      }).then(async (res) => {
-        const data = await res.json();
-        console.log(data);
-        if (res.status === 200) {
-          setError("");
-          router.navigate("/chat");
-        } else {
-          setError(data.message);
-        }
-      });
-    }
-  }
 
   return (
     <ThemedView style={{ alignItems: "center" }}>
@@ -64,7 +35,7 @@ export default function Login() {
         className="w-4/5"
       />
       <View className="w-4/5 flex flex-row my-3">
-        <BouncyCheckbox
+        <Checkbox
           onPress={(pressed) => {
             setPasswordVisible(pressed);
           }}
@@ -78,7 +49,7 @@ export default function Login() {
         </Text>
       </View>
       <Button
-        onPress={() => handleLogin()}
+        onPress={() => handleLogin(email, password, setError)}
         width={200}
         className="mt-2"
         title="Entrar"

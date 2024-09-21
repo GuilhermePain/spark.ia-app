@@ -1,7 +1,6 @@
-import { Image, View } from "react-native";
-import { ThemedText } from "./ThemedText";
+import { Image, View } from "@/components";
+import ThemedText from "../ThemedText";
 import { useThemeMascot } from "@/hooks/useThemeMascot";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import Animated, {
   useSharedValue,
   withTiming,
@@ -10,26 +9,19 @@ import Animated, {
   withSequence,
 } from "react-native-reanimated";
 import { useEffect } from "react";
-import { TypewriterText } from "./TypewriterText";
+import TypewriterText from "../TypeWriterText";
+import useGetStyling from "./styles";
 
-export type MessageProps = {
-  sender: "spark" | string;
-  content?: string;
-  loading?: boolean;
-};
-
-export function Message(props: MessageProps) {
-  const textColor = useThemeColor("text");
-  const mascotImage = useThemeMascot(true);
-  const userImage = require("../assets/images/user-placeholder.jpg");
+export default function Message(props: MessageProps) {
+  const { styles, imageStyle, loadingStyle } = useGetStyling(props.sender);
   const size = useSharedValue(1);
   const animationConfig = {
     duration: 700,
     easing: Easing.inOut(Easing.ease),
   };
-  let image;
-  if (props.sender === "spark") image = mascotImage;
-  else image = userImage;
+  const mascotImage = useThemeMascot(true);
+  const userImage = require("../../assets/images/user-placeholder.jpg");
+  const image = props.sender === "spark" ? mascotImage : userImage;
 
   useEffect(() => {
     size.value = withRepeat(
@@ -43,18 +35,13 @@ export function Message(props: MessageProps) {
   }, []);
 
   return (
-    <View className="mx-auto text-left h-fit w-11/12 pr-10 mt-2">
-      <View className="flex flex-row">
-        <Image
-          className={`${
-            props.sender === "spark" ? "aspect-[7/10]" : "rounded-full"
-          } w-8 h-8`}
-          source={image}
-        />
+    <View className={styles.container}>
+      <View className={styles.textContainer}>
+        <Image style={imageStyle} source={image} />
         <View className="ml-3">
           <ThemedText
             fontSize={20}
-            className="capitalize my-auto"
+            className={styles.senderText}
             type="defaultSemiBold"
           >
             {props.sender}
@@ -62,20 +49,13 @@ export function Message(props: MessageProps) {
           <View style={{ minHeight: 24 }}>
             {props.loading && (
               <Animated.View
+                style={loadingStyle}
                 className="rounded-full my-auto"
-                style={[
-                  {
-                    width: 12,
-                    height: 12,
-                    transform: [{ scale: size }],
-                    backgroundColor: textColor,
-                  },
-                ]}
               />
             )}
             {!props.loading && props.sender !== "spark" && (
               <ThemedText
-                className="break-all h-fit"
+                className={styles.contentText}
                 fontSize={18}
                 type="default"
               >
@@ -90,4 +70,10 @@ export function Message(props: MessageProps) {
       </View>
     </View>
   );
+}
+
+export interface MessageProps {
+  sender: "spark" | string;
+  content?: string;
+  loading?: boolean;
 }

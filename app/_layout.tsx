@@ -1,10 +1,10 @@
-import { Stack } from "expo-router";
+import { Stack } from "@/router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import * as SplashScreen from "expo-splash-screen";
 import "../global.css";
-import { Header } from "@/components/Header";
+import { Header } from "@/components";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -41,8 +41,11 @@ export default function RootLayout() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="signup" options={{ headerShown: false }} />
-      <Stack.Screen name="home" options={{ title: "Boas vidas estudante!" }} />
-      <Stack.Screen name="flashcard" options={{ title: "História" }} />
+      <Stack.Screen name="home" options={{ title: "Home" }} />
+      <Stack.Screen
+        name="flashcard/[subject]/[id]"
+        options={{ title: "História" }}
+      />
       <Stack.Screen name="chat" />
     </Stack>
   );

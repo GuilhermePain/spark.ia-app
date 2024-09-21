@@ -1,8 +1,12 @@
-import { SubjectCard } from "@/components/SubjectCard";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import {
-  faBook,
+  SubjectCard,
+  ThemedView,
+  ThemedText,
+  View,
+  ScrollView,
+} from "@/components";
+
+import {
   faBrain,
   faCalculator,
   faDna,
@@ -12,7 +16,6 @@ import {
   faLightbulb,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import { View, ScrollView } from "react-native";
 
 export default function FlashcardList() {
   return (
@@ -31,16 +34,16 @@ export default function FlashcardList() {
           </ThemedText>
           <View className="flex flex-row">
             <View className="w-1/2">
-              <SubjectCard icon={faCalculator} subject="Matemática" />
-              <SubjectCard icon={faDna} subject="Biologia" />
-              <SubjectCard icon={faFlask} subject="Química" />
-              <SubjectCard icon={faLightbulb} subject="Física" />
+              <SubjectCard subject="math" icon={faCalculator} />
+              <SubjectCard subject="biology" icon={faDna} />
+              <SubjectCard subject="chemistry" icon={faFlask} />
+              <SubjectCard subject="physics" icon={faLightbulb} />
             </View>
             <View className="w-1/2">
-              <SubjectCard icon={faHourglass} subject="História" />
-              <SubjectCard icon={faGlobe} subject="Geografia" />
-              <SubjectCard icon={faBrain} subject="Filosofia" />
-              <SubjectCard icon={faUsers} subject="Sociologia" />
+              <SubjectCard subject="history" icon={faHourglass} />
+              <SubjectCard subject="geography" icon={faGlobe} />
+              <SubjectCard subject="philosophy" icon={faBrain} />
+              <SubjectCard subject="sociology" icon={faUsers} />
             </View>
           </View>
         </View>
