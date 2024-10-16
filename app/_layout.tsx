@@ -1,25 +1,22 @@
-import { Stack } from "@/router";
-import { useFonts } from "expo-font";
-import { useEffect } from "react";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import * as SplashScreen from "expo-splash-screen";
-import "../global.css";
-import { Header } from "@/components";
+import { Stack } from '@/router';
+import { useFonts } from 'expo-font';
+import { useEffect } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+import '../global.css';
+import { Header } from '@/components';
+import SCREEN_OPTIONS from '@/constants/ScreenOptions';
+import FONTS from '@/constants/Fonts';
+import routes from '@/router/routes';
+import Constants from 'expo-constants';
 
-export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    Nunito_Medium: require("../assets/fonts/Nunito-Medium.ttf"),
-    Nunito_Semibold: require("../assets/fonts/Nunito-SemiBold.ttf"),
-    Nunito_Bold: require("../assets/fonts/Nunito-Bold.ttf"),
-  });
+function RootLayout() {
+  const [loaded, error] = useFonts(FONTS);
 
   useEffect(() => {
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
-
-  const headerBackgroundColor = useThemeColor("foreground");
 
   if (!loaded && !error) {
     return null;
@@ -28,25 +25,24 @@ export default function RootLayout() {
   return (
     <Stack
       screenOptions={{
-        headerBackVisible: false,
-        headerBackButtonMenuEnabled: false,
-        statusBarColor: "#011F3B",
         headerTitle: (props) => <Header {...props} />,
-        headerStyle: {
-          backgroundColor: headerBackgroundColor,
-        },
-        headerTintColor: "#fff",
+        ...SCREEN_OPTIONS,
       }}
     >
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="login" options={{ headerShown: false }} />
-      <Stack.Screen name="signup" options={{ headerShown: false }} />
-      <Stack.Screen name="home" options={{ title: "Home" }} />
-      <Stack.Screen
-        name="flashcard/[subject]/[id]"
-        options={{ title: "História" }}
-      />
-      <Stack.Screen name="chat" />
+      {routes.map(({ name, options }, index) => (
+        <Stack.Screen key={index} name={name} options={options} />
+      ))}
     </Stack>
   );
 }
+
+let AppEntryPoint = RootLayout;
+
+if (
+  Constants.expoConfig?.extra &&
+  Constants.expoConfig.extra.storybookEnabled === 'true'
+) {
+  AppEntryPoint = require('../.storybook').default;
+}
+
+export default AppEntryPoint;

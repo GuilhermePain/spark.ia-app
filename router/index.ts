@@ -4,6 +4,14 @@ import {
   Stack,
   useLocalSearchParams,
   useNavigation,
-} from "expo-router";
+} from 'expo-router';
+import routeNames from './routeNames';
 
-export {router, Redirect, Stack, useLocalSearchParams, useNavigation}
+export {
+  router,
+  routeNames,
+  Redirect,
+  Stack,
+  useLocalSearchParams,
+  useNavigation,
+};

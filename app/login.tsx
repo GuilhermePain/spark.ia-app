@@ -1,21 +1,35 @@
-import { useState } from "react";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { router } from "@/router";
-import { useThemeMascot } from "@/hooks/useThemeMascot";
-import { Button, HorizontalLine, ThemedText, ThemedView, Input, Text, Image, View, Checkbox } from "@/components";
-import handleLogin from "@/functions/handleLogin";
+import { useState } from 'react';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { router } from '@/router';
+import { useThemeMascot } from '@/hooks/useThemeMascot';
+import {
+  Button,
+  HorizontalLine,
+  ThemedText,
+  ThemedView,
+  Input,
+  Text,
+  Image,
+  View,
+  Checkbox,
+} from '@/components';
+import handleLogin from '@/functions/handleLogin';
 
 export default function Login() {
   const [error, setError] = useState<string | null>(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [passwordShown, setPasswordVisible] = useState(false);
 
+  const themeMascot = useThemeMascot(true);
+  const textSecondaryColor = useThemeColor('text-secondary');
+  const primaryColor = useThemeColor('primary');
+
   return (
-    <ThemedView style={{ alignItems: "center" }}>
+    <ThemedView style={{ alignItems: 'center' }}>
       <Image
         className="w-32 h-32 mt-20 aspect-[7/10] my-2"
-        source={useThemeMascot(true)}
+        source={themeMascot}
       />
       <ThemedText type="title" className="scale-125 mt-10 font-bold">
         Login
@@ -39,10 +53,10 @@ export default function Login() {
           onPress={(pressed) => {
             setPasswordVisible(pressed);
           }}
-          fillColor={useThemeColor("primary")}
+          fillColor={primaryColor}
         />
         <Text
-          style={{ color: useThemeColor("text-secondary") }}
+          style={{ color: textSecondaryColor }}
           className="font-medium text-xl my-auto -ml-2"
         >
           Mostrar senha
@@ -61,8 +75,8 @@ export default function Login() {
         </Text>
       )}
       <ThemedText type="label" className="mt-2">
-        Não tem uma conta?{" "}
-        <ThemedText onPress={() => router.navigate("/signup")} type="link">
+        Não tem uma conta?{' '}
+        <ThemedText onPress={() => router.navigate('/signup')} type="link">
           Registre-se
         </ThemedText>
         !

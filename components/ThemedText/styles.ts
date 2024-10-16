@@ -3,32 +3,32 @@ const useGetStyling = () => {
     default: {
       fontSize: 16,
       lineHeight: 24,
-      fontFamily: "Nunito_Medium",
+      fontFamily: 'Medium',
     },
     defaultSemiBold: {
       fontSize: 16,
       lineHeight: 24,
-      fontFamily: "Nunito_Semibold",
+      fontFamily: 'Semibold',
     },
     title: {
       fontSize: 30,
       lineHeight: 32,
-      fontFamily: "Nunito_Bold",
+      fontFamily: 'Bold',
     },
     subtitle: {
       fontSize: 20,
-      fontFamily: "Nunito_Bold",
+      fontFamily: 'Bold',
     },
     label: {
       fontSize: 20,
       lineHeight: 28,
-      fontFamily: "Nunito_Semibold",
+      fontFamily: 'Semibold',
     },
     link: {
       lineHeight: 30,
       fontSize: 20,
-      fontFamily: "Nunito_Bold",
-      color: "#FA7807",
+      fontFamily: 'Bold',
+      color: '#FA7807',
     },
   };
 };

@@ -1,12 +1,14 @@
-import { Pressable, Text, View } from "../";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import Pressable from '../Pressable';
+import View from '../View';
+import Text from '../Text';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import {
   FontAwesomeIcon,
   FontAwesomeIconStyle,
-} from "@fortawesome/react-native-fontawesome";
-import { router } from "@/router";
-import { subjectTranslations } from "@/constants/SubjectNames";
-import useGetStyling from "./styles";
+} from '@fortawesome/react-native-fontawesome';
+import { router } from '@/router';
+import { subjectTranslations } from '@/constants/SubjectNames';
+import useGetStyling from './styles';
 
 export default function SubjectCard(props: SubjectCardProps) {
   const displaySubject = subjectTranslations[props.subject];

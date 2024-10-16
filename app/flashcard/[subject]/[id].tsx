@@ -1,34 +1,36 @@
-import { useState } from "react";
-import { HorizontalLine, ThemedView, View, ThemedText, Button, TypeWriter } from "@/components";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { router, useLocalSearchParams, useNavigation } from "@/router";
-import { subjectTranslations } from "@/constants/SubjectNames";
-import { flashcards } from "@/constants/Flashcards";
+import { useState } from 'react';
+import {
+  HorizontalLine,
+  ThemedView,
+  View,
+  ThemedText,
+  Button,
+  TypeWriter,
+} from '@/components';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { router, useLocalSearchParams, useNavigation } from '@/router';
+import { subjectTranslations } from '@/constants/SubjectNames';
+import { flashcards } from '@/constants/Flashcards';
+import { Subject } from '@/types';
+import { getTypewriterStyle } from './styles';
 
 export default function Flashcard() {
   const [answerVisible, setVisible] = useState(false);
   const params = useLocalSearchParams();
   const navigation = useNavigation();
-  const subject = params.subject as
-    | "math"
-    | "biology"
-    | "chemistry"
-    | "physics"
-    | "history"
-    | "geography"
-    | "philosophy"
-    | "sociology";
+  const subject = params.subject as Subject;
   const id = parseInt(params.id as string);
+  const textColor = useThemeColor('text');
+  const TypewriterStyle = getTypewriterStyle(textColor);
+  const subjectFlashcards = flashcards[subject] as {
+    title: string;
+    content: string;
+  }[];
 
   if (subject) {
     navigation.setOptions({ title: subjectTranslations[subject.toString()] });
   }
 
-  const textColor = useThemeColor("text");
-  const subjectFlashcards = flashcards[subject] as {
-    title: string;
-    content: string;
-  }[];
 
   const goToNext = () => {
     if (id >= subjectFlashcards.length - 1) router.back();
@@ -50,13 +52,7 @@ export default function Flashcard() {
             minDelay={0.2}
             maxDelay={0.2}
             className="mt-2 text-3xl"
-            style={{
-              fontFamily: "Nunito_Medium",
-              fontSize: 18,
-              flexWrap: "wrap",
-              height: "auto",
-              color: textColor,
-            }}
+            style={TypewriterStyle}
           >
             {subjectFlashcards &&
               id !== undefined &&
@@ -79,8 +75,8 @@ export default function Flashcard() {
           else goToNext();
         }}
         width={275}
-        className={`${answerVisible ? "mt-4" : "mt-auto"} mx-auto mb-16`}
-        title={answerVisible ? "Acertei" : "Mostrar"}
+        className={`${answerVisible ? 'mt-4' : 'mt-auto'} mx-auto mb-16`}
+        title={answerVisible ? 'Acertei' : 'Mostrar'}
       />
     </ThemedView>
   );

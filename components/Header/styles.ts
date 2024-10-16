@@ -13,7 +13,7 @@ const useGetStyling = () => {
 
   const textStyle = {
     color: textColor,
-    fontFamily: "Nunito_Semibold",
+    fontFamily: "Semibold",
   };
 
   return {

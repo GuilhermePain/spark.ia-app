@@ -1,16 +1,17 @@
-import { Image, View } from "@/components";
-import ThemedText from "../ThemedText";
-import { useThemeMascot } from "@/hooks/useThemeMascot";
+import Image from '../Image';
+import View from '../View';
+import TypewriterText from '../TypeWriterText';
+import ThemedText from '../ThemedText';
+import { useThemeMascot } from '@/hooks/useThemeMascot';
 import Animated, {
   useSharedValue,
   withTiming,
   Easing,
   withRepeat,
   withSequence,
-} from "react-native-reanimated";
-import { useEffect } from "react";
-import TypewriterText from "../TypeWriterText";
-import useGetStyling from "./styles";
+} from 'react-native-reanimated';
+import { useEffect } from 'react';
+import useGetStyling from './styles';
 
 export default function Message(props: MessageProps) {
   const { styles, imageStyle, loadingStyle } = useGetStyling(props.sender);
@@ -20,8 +21,8 @@ export default function Message(props: MessageProps) {
     easing: Easing.inOut(Easing.ease),
   };
   const mascotImage = useThemeMascot(true);
-  const userImage = require("../../assets/images/user-placeholder.jpg");
-  const image = props.sender === "spark" ? mascotImage : userImage;
+  const userImage = require('../../assets/images/user-placeholder.jpg');
+  const image = props.sender === 'spark' ? mascotImage : userImage;
 
   useEffect(() => {
     size.value = withRepeat(
@@ -53,7 +54,7 @@ export default function Message(props: MessageProps) {
                 className="rounded-full my-auto"
               />
             )}
-            {!props.loading && props.sender !== "spark" && (
+            {!props.loading && props.sender !== 'spark' && (
               <ThemedText
                 className={styles.contentText}
                 fontSize={18}
@@ -62,7 +63,7 @@ export default function Message(props: MessageProps) {
                 {props.content}
               </ThemedText>
             )}
-            {!props.loading && props.sender === "spark" && (
+            {!props.loading && props.sender === 'spark' && (
               <TypewriterText content={props.content} />
             )}
           </View>
@@ -73,7 +74,7 @@ export default function Message(props: MessageProps) {
 }
 
 export interface MessageProps {
-  sender: "spark" | string;
+  sender: 'spark' | string;
   content?: string;
   loading?: boolean;
 }

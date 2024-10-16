@@ -4,7 +4,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { router } from "@/router";
 import useGetStyling from "./styles";
 import { useThemeMascot } from "@/hooks/useThemeMascot";
-import routeNames from "./routeNames";
+import {routeNames} from "@/router";
 
 export default function Header(props: HeaderProps) {
   const {
