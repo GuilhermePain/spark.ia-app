@@ -8,9 +8,11 @@ import SCREEN_OPTIONS from '@/constants/ScreenOptions';
 import FONTS from '@/constants/Fonts';
 import routes from '@/router/routes';
 import Constants from 'expo-constants';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 function RootLayout() {
   const [loaded, error] = useFonts(FONTS);
+  const headerBackgroundColor = useThemeColor('foreground');
 
   useEffect(() => {
     if (loaded || error) {
@@ -26,6 +28,9 @@ function RootLayout() {
     <Stack
       screenOptions={{
         headerTitle: (props) => <Header {...props} />,
+        headerStyle: {
+          backgroundColor: headerBackgroundColor,
+        },
         ...SCREEN_OPTIONS,
       }}
     >

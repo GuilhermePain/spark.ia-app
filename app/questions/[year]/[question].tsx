@@ -1,4 +1,5 @@
-import fetchQuestion from '@/api/enem/fetchQuestion';
+import fetchExam from '@/api/enem/fetchExam';
+import { Question as QuestionType } from '@/types';
 import { Dimensions } from 'react-native';
 import { useEffect, useState } from 'react';
 import {
@@ -15,6 +16,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { router } from '@/router';
 import { getSize } from '@/components/Image';
+import { getExamQuestion, storeExamData } from '@/store/exam';
 
 export default function Question() {
   const params = useLocalSearchParams();
@@ -23,7 +25,7 @@ export default function Question() {
   const question = params.question as string;
 
   const [loading, setLoading] = useState(true);
-  const [questionData, setQuestionData] = useState<Question>();
+  const [questionData, setQuestionData] = useState<QuestionType>();
   const [imageSizes, setImageSizes] = useState<
     {
       width: number;
@@ -37,42 +39,54 @@ export default function Question() {
   const windowWidth = Dimensions.get('window').width;
   const [answerVisible, setAnswerVisible] = useState(false);
 
+  const processQuestionData = (data: QuestionType) => {
+    if (data.alternatives[0].includes('https://')) {
+      setImageSizes([]);
+      data.alternatives.map((alt: string) => {
+        getSize(
+          alt,
+          (width, height) => {
+            setImageSizes((prevSizes) => [
+              ...prevSizes,
+              { width: width, height: height },
+            ]);
+          },
+          () => setImageLoadFailed(true)
+        );
+      });
+    }
+
+    if (data.image) {
+      getSize(
+        data.image,
+        (width, height) => {
+          setContentImageAspectRatio(height / width);
+        },
+        () => setImageLoadFailed(true)
+      );
+    }
+
+    setLoading(false);
+    setQuestionData(data);
+  };
+
   useEffect(() => {
     if (year && question) {
-      fetchQuestion(year, question)
-        .then((data: Question) => {
-          if (data.alternatives[0].includes('https://')) {
-            setImageSizes([]);
-            data.alternatives.map((alt: string) => {
-              getSize(
-                alt,
-                (width, height) => {
-                  setImageSizes((prevSizes) => [
-                    ...prevSizes,
-                    { width: width, height: height },
-                  ]);
-                },
-                () => setImageLoadFailed(true)
-              );
+      const loadQuestion = async () => {
+        const cachedExamQuestionData = await getExamQuestion(year, question);
+        if (cachedExamQuestionData) processQuestionData(cachedExamQuestionData);
+        if (!cachedExamQuestionData) {
+          fetchExam(year)
+            .then((examData: { [keys: string]: QuestionType }) => {
+              storeExamData(year, examData);
+              processQuestionData(examData[question]);
+            })
+            .catch(() => {
+              throw 'Erro ao pegar dados';
             });
-          }
-
-          if (data.image) {
-            getSize(
-              data.image,
-              (width, height) => {
-                setContentImageAspectRatio(height / width);
-              },
-              () => setImageLoadFailed(true)
-            );
-          }
-
-          setLoading(false);
-          setQuestionData(data);
-        })
-        .catch(() => {
-          throw 'Erro ao pegar dados';
-        });
+        }
+      };
+      loadQuestion();
     }
   }, []);
 
@@ -189,14 +203,4 @@ export default function Question() {
       )}
     </ThemedView>
   );
-}
-
-interface Question {
-  content: string;
-  image: string;
-  command: string;
-  alternatives: string[];
-  subjects: string[];
-  answer: string;
-  comment: string;
 }

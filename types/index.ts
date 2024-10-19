@@ -1,2 +1,3 @@
 import Subject from './subject';
-export { Subject };
+import Question from './question';
+export { Subject, Question };

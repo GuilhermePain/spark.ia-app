@@ -1,4 +1,5 @@
 import fetchExams from '@/api/enem/fetchExams';
+import { EXAMS } from '@/constants/Exams';
 import {
   Button,
   ScrollView,
@@ -7,18 +8,27 @@ import {
   View,
   Loading,
 } from '@/components';
-import { router } from 'expo-router';
+import { getAvailableExams } from '@/store/exam';
+import { Href, router } from 'expo-router';
 import { useEffect, useState } from 'react';
 
 export default function Questions() {
   const [loading, setLoading] = useState(true);
-  const [exams, setExams] = useState<string[]>();
+  const [exams, setExams] = useState<string[]>(EXAMS);
+  const [noInternet, setNoInternet] = useState(false);
+  const [availableExams, setAvailableExams] = useState<string[]>([]);
 
   useEffect(() => {
-    fetchExams().then((e) => {
-      setExams(e);
-      setLoading(false);
-    });
+    fetchExams()
+      .then((e) => {
+        setExams(e);
+        setLoading(false);
+      })
+      .catch(async () => {
+        setNoInternet(true);
+        setAvailableExams(await getAvailableExams());
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -34,7 +44,7 @@ export default function Questions() {
           >
             Escolha uma aplicação do ENEM
           </ThemedText>
-          {exams?.map((e, ind) => {
+          {exams?.map((exam, ind) => {
             return (
               <View
                 key={ind}
@@ -45,10 +55,13 @@ export default function Questions() {
                   type="title"
                   className="my-auto ml-4"
                 >
-                  {e}
+                  {exam}
                 </ThemedText>
                 <Button
-                  onPress={() => router.navigate('/questions/' + e + '/1')}
+                  disabled={noInternet && !availableExams.includes(exam)}
+                  onPress={() =>
+                    router.navigate(('/questions/' + exam + '/1') as Href)
+                  }
                   textSize={22}
                   className="my-auto"
                   title="Ver questões"

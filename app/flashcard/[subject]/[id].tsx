@@ -8,7 +8,7 @@ import {
   TypeWriter,
 } from '@/components';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { router, useLocalSearchParams, useNavigation } from '@/router';
+import { Href, router, useLocalSearchParams, useNavigation } from '@/router';
 import { subjectTranslations } from '@/constants/SubjectNames';
 import { flashcards } from '@/constants/Flashcards';
 import { Subject } from '@/types';
@@ -33,7 +33,7 @@ export default function Flashcard() {
 
   const goToNext = () => {
     if (id >= subjectFlashcards.length - 1) router.back();
-    else router.replace({ pathname: `/flashcard/${subject}/${id + 1}` });
+    else router.replace(`/flashcard/${subject}/${id + 1}` as Href);
   };
 
   return (

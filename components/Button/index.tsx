@@ -17,6 +17,7 @@ export default function Button(props: ButtonProps) {
   return (
     <View style={containerStyle} className={containerClassName}>
       <Pressable
+        disabled={props.disabled}
         onPress={onPress}
         style={containerStyle}
         android_ripple={androidRippleConfig}
@@ -40,6 +41,7 @@ export default function Button(props: ButtonProps) {
 
 export interface ButtonProps {
   title?: string;
+  disabled?: boolean;
   icon?: IconDefinition;
   iconSize?: number;
   textSize?: number;

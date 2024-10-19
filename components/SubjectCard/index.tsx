@@ -15,21 +15,24 @@ export default function SubjectCard(props: SubjectCardProps) {
   const { styles } = useGetStyling();
 
   return (
-    <View className={styles.cardContainer}>
-      <Pressable
-        onPress={() => router.push(`/flashcard/${props.subject}/0`)}
-        android_ripple={styles.androidRipple}
-        className={styles.pressable}
-      >
-        <View className={styles.contentContainer}>
-          <FontAwesomeIcon
-            color="white"
-            style={styles.icon as FontAwesomeIconStyle}
-            icon={props.icon}
-          />
-          <Text className={styles.subjectText}>{displaySubject}</Text>
-        </View>
-      </Pressable>
+    <View>
+      <View className={styles.cardContainer}>
+        <Pressable
+          onPress={() => router.push(`/flashcard/${props.subject}/0`)}
+          android_ripple={styles.androidRipple}
+          className={styles.pressable}
+        >
+          <View className={styles.contentContainer}>
+            <FontAwesomeIcon
+              size={50}
+              color="white"
+              style={styles.icon as FontAwesomeIconStyle}
+              icon={props.icon}
+            />
+          </View>
+        </Pressable>
+      </View>
+      <Text className={styles.subjectText}>{displaySubject}</Text>
     </View>
   );
 }

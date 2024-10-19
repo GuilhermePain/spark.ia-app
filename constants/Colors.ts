@@ -5,6 +5,7 @@
 
 export const Colors = {
   light: {
+    card: 'rgb(248 250 252)',
     primary: '#FA7807',
     'primary-focus': '#FDAD0B',
     input: '#f0f1f3',
@@ -17,6 +18,7 @@ export const Colors = {
     background: '#fff',
   },
   dark: {
+    card: 'rgb(51 65 85)',
     primary: '#FA7807',
     'primary-focus': '#FDAD0B',
     input: '#f0f1f3',
