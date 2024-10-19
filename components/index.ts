@@ -18,6 +18,7 @@ import TypeWriter from './TypeWriter';
 import Checkbox from './Checkbox';
 import Loading from './Loading';
 import ErrorBoundary from './ErrorBoundary';
+import PressableCard from './PressableCard';
 
 export {
   Button,
@@ -39,5 +40,6 @@ export {
   TypeWriter,
   Checkbox,
   Loading,
-  ErrorBoundary
+  ErrorBoundary,
+  PressableCard,
 };

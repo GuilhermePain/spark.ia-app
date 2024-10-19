@@ -1,4 +1,4 @@
-import fetchExam from '@/api/enem/fetchExam';
+import { fetchExam } from '@/api/enem';
 import { Question as QuestionType } from '@/types';
 import { Dimensions } from 'react-native';
 import { useEffect, useState } from 'react';

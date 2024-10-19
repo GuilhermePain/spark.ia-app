@@ -1,17 +1,24 @@
-import { useState } from "react";
-import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
-import { useThemeMascot } from "@/hooks/useThemeMascot";
-import Message, { type MessageProps } from "@/components/Message";
-import { View, ThemedView, ScrollView, Input, Button, ChatPlaceholder } from "@/components/";
-import handlePrompt from "@/functions/handlePrompt";
+import { useState } from 'react';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { useThemedMascot } from '@/hooks';
+import Message, { type MessageProps } from '@/components/Message';
+import {
+  View,
+  ThemedView,
+  ScrollView,
+  Input,
+  Button,
+  ChatPlaceholder,
+} from '@/components/';
+import { handlePrompt } from '@/functions';
 
 export default function Chat() {
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPrompt] = useState('');
   const [messages, setMessages] = useState<MessageProps[]>([]);
-  const mascotImage = useThemeMascot(true);
+  const mascotImage = useThemedMascot(true);
 
   return (
-    <ThemedView style={{ alignItems: "center" }}>
+    <ThemedView style={{ alignItems: 'center' }}>
       <ScrollView className="w-full">
         <View className="h-2 w-full" />
         {messages.length === 0 && <ChatPlaceholder mascotImage={mascotImage} />}

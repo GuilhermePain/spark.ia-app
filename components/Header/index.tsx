@@ -1,10 +1,10 @@
-import { Image, View, Text, TouchableOpacity } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { router } from "@/router";
-import useGetStyling from "./styles";
-import { useThemeMascot } from "@/hooks/useThemeMascot";
-import {routeNames} from "@/router";
+import { Image, View, Text, TouchableOpacity } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { router } from '@/router';
+import useGetStyling from '../PressableCard/styles';
+import { useThemedMascot } from '@/hooks';
+import { routeNames } from '@/router';
 
 export default function Header(props: HeaderProps) {
   const {
@@ -25,14 +25,14 @@ export default function Header(props: HeaderProps) {
           className={touchableOpacityClassName}
         >
           <FontAwesomeIcon
-            style={{ marginVertical: "auto" }}
+            style={{ marginVertical: 'auto' }}
             color={backButtonColor}
             size={25}
             icon={faArrowLeft}
           />
         </TouchableOpacity>
       )}
-      <Image className={imageClassName} source={useThemeMascot()} />
+      <Image className={imageClassName} source={useThemedMascot()} />
       <Text className={textClassName} style={textStyle}>
         {Object.keys(routeNames).includes(props.children)
           ? routeNames[props.children]

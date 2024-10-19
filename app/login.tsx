@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { useThemeColor } from '@/hooks/useThemeColor';
 import { router } from '@/router';
-import { useThemeMascot } from '@/hooks/useThemeMascot';
+import { useThemedMascot, useThemeColor } from '@/hooks';
 import {
   Button,
   HorizontalLine,
@@ -13,7 +12,7 @@ import {
   View,
   Checkbox,
 } from '@/components';
-import handleLogin from '@/functions/handleLogin';
+import { handleLogin } from '@/functions';
 
 export default function Login() {
   const [error, setError] = useState<string | null>(null);
@@ -21,7 +20,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [passwordShown, setPasswordVisible] = useState(false);
 
-  const themeMascot = useThemeMascot(true);
+  const themeMascot = useThemedMascot(true);
   const textSecondaryColor = useThemeColor('text-secondary');
   const primaryColor = useThemeColor('primary');
 

@@ -4,7 +4,7 @@ import {
   ThemedText,
   View,
   ScrollView,
-} from "@/components";
+} from '@/components';
 
 import {
   faBrain,
@@ -15,7 +15,7 @@ import {
   faHourglass,
   faLightbulb,
   faUsers,
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function FlashcardList() {
   return (
@@ -24,7 +24,7 @@ export default function FlashcardList() {
         contentContainerStyle={{
           borderRadius: 10,
           paddingBottom: 20,
-          overflow: "hidden",
+          overflow: 'hidden',
         }}
         className="mx-auto w-full h-full"
       >

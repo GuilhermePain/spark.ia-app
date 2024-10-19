@@ -7,10 +7,9 @@ import {
   Button,
   TypeWriter,
 } from '@/components';
-import { useThemeColor } from '@/hooks/useThemeColor';
+import { useThemeColor } from '@/hooks';
 import { Href, router, useLocalSearchParams, useNavigation } from '@/router';
-import { subjectTranslations } from '@/constants/SubjectNames';
-import { flashcards } from '@/constants/Flashcards';
+import { subject_translations, flashcards } from '@/constants';
 import { Subject } from '@/types';
 import { getTypewriterStyle } from './styles';
 
@@ -28,7 +27,7 @@ export default function Flashcard() {
   }[];
 
   if (subject) {
-    navigation.setOptions({ title: subjectTranslations[subject.toString()] });
+    navigation.setOptions({ title: subject_translations[subject.toString()] });
   }
 
   const goToNext = () => {

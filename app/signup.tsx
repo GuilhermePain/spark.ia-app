@@ -1,30 +1,39 @@
-import { useState } from "react";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { router } from "@/router";
-import { ThemedView, ThemedText, Image, HorizontalLine, Input, View, Text, Button, Checkbox } from "@/components";
-import { useThemeMascot } from "@/hooks/useThemeMascot";
-import handleSignUp from "@/functions/handleSignup";
+import { useState } from 'react';
+import { useThemeColor, useThemedMascot } from '@/hooks';
+import { router } from '@/router';
+import {
+  ThemedView,
+  ThemedText,
+  Image,
+  HorizontalLine,
+  Input,
+  View,
+  Text,
+  Button,
+  Checkbox,
+} from '@/components';
+import { handleSignup } from '@/functions';
 
-export default function Login() {
+export default function SignUp() {
   const [error, setError] = useState<string | null>(null);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordShown, setPasswordVisible] = useState(false);
 
   function resetForm() {
-    setName("");
-    setEmail("");
-    setConfirmPassword("");
-    setPassword("");
+    setName('');
+    setEmail('');
+    setConfirmPassword('');
+    setPassword('');
   }
 
   return (
-    <ThemedView style={{ alignItems: "center" }}>
+    <ThemedView style={{ alignItems: 'center' }}>
       <Image
         className="w-32 h-32 mt-10 aspect-[7/10] my-2"
-        source={useThemeMascot(true)}
+        source={useThemedMascot(true)}
       />
       <ThemedText type="title" className="scale-125 mt-10 font-bold">
         Registro
@@ -61,17 +70,26 @@ export default function Login() {
           onPress={(pressed) => {
             setPasswordVisible(pressed);
           }}
-          fillColor={useThemeColor("primary")}
+          fillColor={useThemeColor('primary')}
         />
         <Text
-          style={{ color: useThemeColor("text-secondary") }}
+          style={{ color: useThemeColor('text-secondary') }}
           className="font-medium text-xl my-auto -ml-2"
         >
           Mostrar senha
         </Text>
       </View>
       <Button
-        onPress={() => handleSignUp(email, password, confirmPassword, name, setError, resetForm)}
+        onPress={() =>
+          handleSignup(
+            email,
+            password,
+            confirmPassword,
+            name,
+            setError,
+            resetForm
+          )
+        }
         width={200}
         className="mt-2"
         title="Registrar"
@@ -83,8 +101,8 @@ export default function Login() {
         </Text>
       )}
       <ThemedText type="label" className="mt-2">
-        Já está registrado? Faça{" "}
-        <ThemedText onPress={() => router.navigate("/login")} type="link">
+        Já está registrado? Faça{' '}
+        <ThemedText onPress={() => router.navigate('/login')} type="link">
           login
         </ThemedText>
         !

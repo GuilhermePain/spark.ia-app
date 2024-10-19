@@ -1,17 +1,17 @@
 import Pressable from '../Pressable';
 import View from '../View';
-import Text from '../Text';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import {
   FontAwesomeIcon,
   FontAwesomeIconStyle,
 } from '@fortawesome/react-native-fontawesome';
 import { router } from '@/router';
-import { subjectTranslations } from '@/constants/SubjectNames';
+import { subject_translations } from '@/constants';
 import useGetStyling from './styles';
+import ThemedText from '../ThemedText';
 
 export default function SubjectCard(props: SubjectCardProps) {
-  const displaySubject = subjectTranslations[props.subject];
+  const displaySubject = subject_translations[props.subject];
   const { styles } = useGetStyling();
 
   return (
@@ -32,7 +32,13 @@ export default function SubjectCard(props: SubjectCardProps) {
           </View>
         </Pressable>
       </View>
-      <Text className={styles.subjectText}>{displaySubject}</Text>
+      <ThemedText
+        type="defaultSemiBold"
+        styleWithClassName
+        className={styles.subjectText}
+      >
+        {displaySubject}
+      </ThemedText>
     </View>
   );
 }

@@ -1,4 +1,4 @@
-import { useThemeColor } from '@/hooks/useThemeColor';
+import { useThemeColor } from '@/hooks';
 import { TextStyle } from '../Text';
 import { ButtonProps } from '.';
 

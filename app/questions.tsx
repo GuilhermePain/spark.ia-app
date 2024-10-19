@@ -1,5 +1,5 @@
-import fetchExams from '@/api/enem/fetchExams';
-import { EXAMS } from '@/constants/Exams';
+import { fetchExams } from '@/api/enem';
+import { exams as default_exams } from '@/constants';
 import {
   Button,
   ScrollView,
@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 
 export default function Questions() {
   const [loading, setLoading] = useState(true);
-  const [exams, setExams] = useState<string[]>(EXAMS);
+  const [exams, setExams] = useState<string[]>(default_exams);
   const [noInternet, setNoInternet] = useState(false);
   const [availableExams, setAvailableExams] = useState<string[]>([]);
 

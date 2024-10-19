@@ -1,4 +1,4 @@
-export const EXAMS = [
+const exams = [
   '2009',
   '2010',
   '2011',
@@ -15,3 +15,5 @@ export const EXAMS = [
   '2022',
   '2023',
 ];
+
+export default exams;

@@ -2,7 +2,7 @@ import Image from '../Image';
 import View from '../View';
 import TypewriterText from '../TypeWriterText';
 import ThemedText from '../ThemedText';
-import { useThemeMascot } from '@/hooks/useThemeMascot';
+import { useThemedMascot } from '@/hooks';
 import Animated, {
   useSharedValue,
   withTiming,
@@ -20,7 +20,7 @@ export default function Message(props: MessageProps) {
     duration: 700,
     easing: Easing.inOut(Easing.ease),
   };
-  const mascotImage = useThemeMascot(true);
+  const mascotImage = useThemedMascot(true);
   const userImage = require('../../assets/images/user-placeholder.jpg');
   const image = props.sender === 'spark' ? mascotImage : userImage;
 
