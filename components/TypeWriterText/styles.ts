@@ -1,13 +1,13 @@
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 const useGetStyling = () => {
   return {
     typewriter: {
-      fontFamily: "Nunito_Medium",
+      fontFamily: 'Medium',
       fontSize: 18,
-      flexWrap: "wrap",
-      height: "auto",
-      color: useThemeColor("text"),
+      flexWrap: 'wrap',
+      height: 'auto',
+      color: useThemeColor('text'),
     },
   };
 };

@@ -1,4 +1,4 @@
-const apiEndpoint = `${process.env.EXPO_PUBLIC_API_URL}/api/novousuario`;
+const apiEndpoint = `${process.env.EXPO_PUBLIC_API_URL}/novousuario`;
 
 export default async function signup(
   email: string,

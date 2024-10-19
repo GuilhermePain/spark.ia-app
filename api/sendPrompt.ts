@@ -1,6 +1,6 @@
 import { MessageProps } from "@/components/Message";
 
-const apiEndpoint = `${process.env.EXPO_PUBLIC_API_URL}/api/perguntar`;
+const apiEndpoint = `${process.env.EXPO_PUBLIC_API_URL}/perguntar`;
 
 const sanitizeData = (data: string) => {
   return data

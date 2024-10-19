@@ -4,6 +4,7 @@ const routeNames: { [key: string]: string } = {
   'flashcard-list': 'Flashcards',
   home: 'Home',
   'questions/[year]/[question]': 'Questões',
+  questions: 'Banco de questões',
 };
 
 export default routeNames;

@@ -31,7 +31,6 @@ export default function Flashcard() {
     navigation.setOptions({ title: subjectTranslations[subject.toString()] });
   }
 
-
   const goToNext = () => {
     if (id >= subjectFlashcards.length - 1) router.back();
     else router.replace({ pathname: `/flashcard/${subject}/${id + 1}` });

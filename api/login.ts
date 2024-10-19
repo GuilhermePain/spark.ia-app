@@ -1,4 +1,4 @@
-const apiEndpoint = `${process.env.EXPO_PUBLIC_API_URL}/api/autenticar`;
+const apiEndpoint = `${process.env.EXPO_PUBLIC_API_URL}/autenticar`;
 
 export default async function login(email: string, password: string) {
   const response = await fetch(apiEndpoint, {

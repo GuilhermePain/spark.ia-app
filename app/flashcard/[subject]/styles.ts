@@ -2,7 +2,7 @@ import { TextStyle } from '@/components/Text';
 
 export const getTypewriterStyle = (textColor: string) => {
   return {
-    fontFamily: 'Nunito_Medium',
+    fontFamily: 'Medium',
     fontSize: 18,
     flexWrap: 'wrap',
     height: 'auto',
