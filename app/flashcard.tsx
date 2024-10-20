@@ -17,7 +17,7 @@ import {
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 
-export default function FlashcardList() {
+export default function Flashcard() {
   return (
     <ThemedView>
       <ScrollView

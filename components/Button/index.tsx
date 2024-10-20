@@ -27,7 +27,6 @@ export default function Button(props: ButtonProps) {
           {props.title}
           {props.icon && (
             <FontAwesomeIcon
-              transform="grow-3"
               size={props.iconSize}
               color="white"
               icon={props.icon}

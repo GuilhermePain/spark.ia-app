@@ -1,4 +1,3 @@
-import { fetchExam } from '@/api/enem';
 import { Question as QuestionType } from '@/types';
 import { Dimensions } from 'react-native';
 import { useEffect, useState } from 'react';
@@ -13,10 +12,17 @@ import {
   View,
 } from '@/components';
 import { useLocalSearchParams } from 'expo-router';
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { router } from '@/router';
+import {
+  faArrowLeft,
+  faArrowRight,
+  faEye,
+} from '@fortawesome/free-solid-svg-icons';
 import { getSize } from '@/components/Image';
-import { getExamQuestion, storeExamData } from '@/store/exam';
+import { ImageSize } from '@/types';
+import checkUnrenderedImages from './checkUnrenderedImages';
+import changeQuestions from './changeQuestions';
+import loadQuestion from './loadQuestion';
+import checkArrowsAvailability from './checkArrowsAvailability';
 
 export default function Question() {
   const params = useLocalSearchParams();
@@ -26,12 +32,7 @@ export default function Question() {
 
   const [loading, setLoading] = useState(true);
   const [questionData, setQuestionData] = useState<QuestionType>();
-  const [imageSizes, setImageSizes] = useState<
-    {
-      width: number;
-      height: number;
-    }[]
-  >([]);
+  const [imageSizes, setImageSizes] = useState<ImageSize[]>([]);
   const [contentImageAspectRatio, setContentImageAspectRatio] = useState<
     null | number
   >();
@@ -71,39 +72,14 @@ export default function Question() {
   };
 
   useEffect(() => {
-    if (year && question) {
-      const loadQuestion = async () => {
-        const cachedExamQuestionData = await getExamQuestion(year, question);
-        if (cachedExamQuestionData) processQuestionData(cachedExamQuestionData);
-        if (!cachedExamQuestionData) {
-          fetchExam(year)
-            .then((examData: { [keys: string]: QuestionType }) => {
-              storeExamData(year, examData);
-              processQuestionData(examData[question]);
-            })
-            .catch(() => {
-              throw 'Erro ao pegar dados';
-            });
-        }
-      };
-      loadQuestion();
-    }
+    loadQuestion(processQuestionData, year, question);
   }, []);
 
-  const changeQuestions = (change: number) => {
-    const targetQuestion = parseInt(question) + change;
-    if (targetQuestion > 0 && targetQuestion <= 180)
-      router.replace(`/questions/${year}/${targetQuestion}`);
-  };
-
-  let imageAlternatives;
-  let hasUnrenderedImages = false;
-  if (questionData) {
-    imageAlternatives = questionData.alternatives[0].includes('https://');
-    if (imageAlternatives)
-      hasUnrenderedImages =
-        imageSizes.length !== questionData.alternatives.length;
-  }
+  const { leftArrowEnabled, rightArrowEnabled } =
+    checkArrowsAvailability(question);
+  const previousQuestion = () => changeQuestions(-1, question, year);
+  const nextQuestion = () => changeQuestions(1, question, year);
+  const hasUnrenderedImages = checkUnrenderedImages(imageSizes, questionData);
 
   return (
     <ThemedView>
@@ -113,7 +89,8 @@ export default function Question() {
         <>
           <View className="absolute right-4 bottom-4 flex flex-row gap-2 z-10">
             <Button
-              onPress={() => changeQuestions(-1)}
+              disabled={!leftArrowEnabled}
+              onPress={() => previousQuestion()}
               width={50}
               height={50}
               round
@@ -121,7 +98,8 @@ export default function Question() {
               iconSize={25}
             />
             <Button
-              onPress={() => changeQuestions(1)}
+              disabled={!rightArrowEnabled}
+              onPress={() => nextQuestion()}
               width={50}
               height={50}
               round
@@ -192,8 +170,20 @@ export default function Question() {
                 <ThemedText type="subtitle" fontSize={20}>
                   Resposta
                 </ThemedText>
-                <ThemedText type="label" fontSize={20}>
-                  Item {questionData.answer}
+                <ThemedText lineHeight={25} type="label" fontSize={20}>
+                  Item{' '}
+                  {answerVisible ? (
+                    questionData.answer
+                  ) : (
+                    <ThemedText
+                      lineHeight={25}
+                      fontSize={20}
+                      type="link"
+                      onPress={() => setAnswerVisible(true)}
+                    >
+                      (Exibir)
+                    </ThemedText>
+                  )}
                 </ThemedText>
                 <View className="h-10" />
               </>

@@ -9,6 +9,7 @@ export default function ThemedText({
   className,
   centered,
   styleWithClassName,
+  lineHeight,
   ...rest
 }: ThemedTextProps) {
   const color = useThemeColor('text');
@@ -28,9 +29,10 @@ export default function ThemedText({
           type === 'label' ? styles.label : undefined,
           style,
           fontSize !== undefined && { fontSize },
+          lineHeight !== undefined && { lineHeight: lineHeight },
         ]
       }
-      className={className}
+      className={`text-neutral-dark dark:text-neutral ${className}`}
       {...rest}
     />
   );
@@ -40,6 +42,7 @@ export interface ThemedTextProps extends TextProps {
   fontSize?: number;
   styleWithClassName?: boolean;
   centered?: boolean;
+  lineHeight?: number;
   type?:
     | 'default'
     | 'title'

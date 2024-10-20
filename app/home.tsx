@@ -22,7 +22,7 @@ export default function Home() {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => router.push('/flashcard-list')}
+          onPress={() => router.push('/flashcard')}
           className="dark:bg-slate-700 bg-white rounded-2xl mx-auto mt-10 shadow-lg w-60 h-[16rem]"
         >
           <Image
