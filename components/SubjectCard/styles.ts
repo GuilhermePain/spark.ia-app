@@ -9,7 +9,8 @@ const useGetStyling = () => {
     icon: {
       marginVertical: 'auto',
     },
-    subjectText: 'text-white font-bold text-2xl text-center',
+    subjectText:
+      'text-neutral-dark dark:text-neutral font-bold text-2xl text-center',
     androidRipple: {
       color: useThemeColor('primary-focus'),
     },

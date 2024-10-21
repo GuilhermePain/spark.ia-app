@@ -7,6 +7,7 @@ import {
   ThemedView,
   View,
   Loading,
+  HorizontalLine,
 } from '@/components';
 import { getAvailableExams } from '@/store/exam';
 import { Href, router } from 'expo-router';
@@ -37,18 +38,20 @@ export default function Questions() {
         <Loading />
       ) : (
         <ScrollView>
-          <ThemedText
-            type="title"
-            className="w-10/12 mx-auto"
-            style={{ fontSize: 36, marginTop: 10, lineHeight: 48 }}
-          >
-            Escolha uma aplicação do ENEM
-          </ThemedText>
+          <View className="w-10/12 mx-auto">
+            <ThemedText
+              type="title"
+              style={{ fontSize: 32, marginTop: 10, lineHeight: 48 }}
+            >
+              Escolha uma aplicação do ENEM
+            </ThemedText>
+            <HorizontalLine big />
+          </View>
           {exams?.map((exam, ind) => {
             return (
               <View
                 key={ind}
-                className="border-2 dark:border-gray-600 border-gray-300 w-10/12 mx-auto h-32 rounded-2xl mt-4 flex-row justify-around "
+                className="dark:bg-slate-700 bg-white w-10/12 mx-auto h-28 shadow-md shadow-gray-700 rounded-2xl mt-4 flex-row justify-around "
               >
                 <ThemedText
                   style={{ lineHeight: 40 }}

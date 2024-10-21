@@ -5,6 +5,7 @@ import { router } from '@/router';
 import useGetStyling from '../PressableCard/styles';
 import { useThemedMascot } from '@/hooks';
 import { routeNames } from '@/router';
+import Picker from '../Picker';
 
 export default function Header(props: HeaderProps) {
   const {

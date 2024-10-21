@@ -4,6 +4,7 @@ import {
   ThemedText,
   View,
   ScrollView,
+  HorizontalLine,
 } from '@/components';
 
 import {
@@ -32,6 +33,7 @@ export default function Flashcard() {
           <ThemedText className="mt-10" type="title">
             Escolha uma disciplina
           </ThemedText>
+          <HorizontalLine big />
           <View className="flex flex-row">
             <View className="w-1/2">
               <SubjectCard subject="math" icon={faCalculator} />

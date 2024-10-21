@@ -11,7 +11,7 @@ export default function Home() {
           className="dark:bg-slate-700 bg-white rounded-2xl mx-auto mt-10 shadow-lg w-60 h-[16rem]"
         >
           <Image
-            className="w-52 h-44 mx-auto"
+            className="w-44 h-44 mx-auto"
             resizeMethod="scale"
             resizeMode="contain"
             source={require('../assets/images/chatbot-chooser.png')}
@@ -26,7 +26,7 @@ export default function Home() {
           className="dark:bg-slate-700 bg-white rounded-2xl mx-auto mt-10 shadow-lg w-60 h-[16rem]"
         >
           <Image
-            className="w-52 h-44 mx-auto"
+            className="w-44 h-44 mx-auto"
             resizeMethod="scale"
             resizeMode="contain"
             source={require('../assets/images/flashcard-chooser.png')}
@@ -41,10 +41,10 @@ export default function Home() {
           className="dark:bg-slate-700 bg-white rounded-2xl mx-auto mt-10 shadow-lg w-60 h-[16rem]"
         >
           <Image
-            className="w-52 h-44 mx-auto"
+            className="w-40 h-44 mx-auto"
             resizeMethod="scale"
-            resizeMode="cover"
-            source={require('../assets/images/survey.png')}
+            resizeMode="contain"
+            source={require('../assets/images/questions.png')}
           />
           <HorizontalLine big />
           <Text className="font-medium text-2xl mx-auto dark:text-white text-background-dark w-full text-center">

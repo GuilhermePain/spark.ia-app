@@ -19,6 +19,7 @@ import Checkbox from './Checkbox';
 import Loading from './Loading';
 import ErrorBoundary from './ErrorBoundary';
 import PressableCard from './PressableCard';
+import Picker from "./Picker";
 
 export {
   Button,
@@ -42,4 +43,5 @@ export {
   Loading,
   ErrorBoundary,
   PressableCard,
+  Picker
 };
