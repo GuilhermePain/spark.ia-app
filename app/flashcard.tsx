@@ -4,7 +4,8 @@ import {
   ThemedText,
   View,
   ScrollView,
-} from "@/components";
+  HorizontalLine,
+} from '@/components';
 
 import {
   faBrain,
@@ -15,16 +16,16 @@ import {
   faHourglass,
   faLightbulb,
   faUsers,
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
 
-export default function FlashcardList() {
+export default function Flashcard() {
   return (
     <ThemedView>
       <ScrollView
         contentContainerStyle={{
           borderRadius: 10,
           paddingBottom: 20,
-          overflow: "hidden",
+          overflow: 'hidden',
         }}
         className="mx-auto w-full h-full"
       >
@@ -32,6 +33,7 @@ export default function FlashcardList() {
           <ThemedText className="mt-10" type="title">
             Escolha uma disciplina
           </ThemedText>
+          <HorizontalLine big />
           <View className="flex flex-row">
             <View className="w-1/2">
               <SubjectCard subject="math" icon={faCalculator} />

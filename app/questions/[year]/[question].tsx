@@ -1,11 +1,13 @@
-import fetchQuestion from '@/api/enem/fetchQuestion';
+import { Question as QuestionType } from '@/types';
 import { Dimensions } from 'react-native';
 import { useEffect, useState } from 'react';
 import {
   Button,
+  Header,
   HorizontalLine,
   Image,
   Loading,
+  Modal,
   ScrollView,
   ThemedText,
   ThemedView,
@@ -13,83 +15,83 @@ import {
 } from '@/components';
 import { useLocalSearchParams } from 'expo-router';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { router } from '@/router';
 import { getSize } from '@/components/Image';
+import { ImageSize } from '@/types';
+import checkUnrenderedImages from './checkUnrenderedImages';
+import changeQuestions from './changeQuestions';
+import loadQuestion from './loadQuestion';
+import checkArrowsAvailability from './checkArrowsAvailability';
+import { useNavigation } from '@/router';
+import { HeaderProps } from '@/components/Header';
 
 export default function Question() {
   const params = useLocalSearchParams();
+  const navigation = useNavigation();
 
   const year = params.year as string;
   const question = params.question as string;
 
   const [loading, setLoading] = useState(true);
-  const [questionData, setQuestionData] = useState<Question>();
-  const [imageSizes, setImageSizes] = useState<
-    {
-      width: number;
-      height: number;
-    }[]
-  >([]);
+  const [questionData, setQuestionData] = useState<QuestionType>();
+  const [imageSizes, setImageSizes] = useState<ImageSize[]>([]);
   const [contentImageAspectRatio, setContentImageAspectRatio] = useState<
     null | number
   >();
   const [imageLoadFailed, setImageLoadFailed] = useState(false);
   const windowWidth = Dimensions.get('window').width;
   const [answerVisible, setAnswerVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const language = question.includes('ingles') ? 'inglês' : 'espanhol';
 
-  useEffect(() => {
-    if (year && question) {
-      fetchQuestion(year, question)
-        .then((data: Question) => {
-          if (data.alternatives[0].includes('https://')) {
-            setImageSizes([]);
-            data.alternatives.map((alt: string) => {
-              getSize(
-                alt,
-                (width, height) => {
-                  setImageSizes((prevSizes) => [
-                    ...prevSizes,
-                    { width: width, height: height },
-                  ]);
-                },
-                () => setImageLoadFailed(true)
-              );
-            });
-          }
-
-          if (data.image) {
-            getSize(
-              data.image,
-              (width, height) => {
-                setContentImageAspectRatio(height / width);
-              },
-              () => setImageLoadFailed(true)
-            );
-          }
-
-          setLoading(false);
-          setQuestionData(data);
-        })
-        .catch(() => {
-          throw 'Erro ao pegar dados';
-        });
+  const processQuestionData = (data: QuestionType) => {
+    if (data.alternatives[0].includes('https://')) {
+      setImageSizes([]);
+      data.alternatives.map((alt: string) => {
+        getSize(
+          alt,
+          (width, height) => {
+            setImageSizes((prevSizes) => [
+              ...prevSizes,
+              { width: width, height: height },
+            ]);
+          },
+          () => setImageLoadFailed(true)
+        );
+      });
     }
-  }, []);
 
-  const changeQuestions = (change: number) => {
-    const targetQuestion = parseInt(question) + change;
-    if (targetQuestion > 0 && targetQuestion <= 180)
-      router.replace(`/questions/${year}/${targetQuestion}`);
+    if (data.image) {
+      getSize(
+        data.image,
+        (width, height) => {
+          setContentImageAspectRatio(height / width);
+        },
+        () => setImageLoadFailed(true)
+      );
+    }
+
+    setLoading(false);
+    setQuestionData(data);
   };
 
-  let imageAlternatives;
-  let hasUnrenderedImages = false;
-  if (questionData) {
-    imageAlternatives = questionData.alternatives[0].includes('https://');
-    if (imageAlternatives)
-      hasUnrenderedImages =
-        imageSizes.length !== questionData.alternatives.length;
-  }
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: (props: HeaderProps) => (
+        <Header
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          {...props}
+        />
+      ),
+    });
+    loadQuestion(processQuestionData, year, question);
+  }, [setModalVisible]);
+
+  const { leftArrowEnabled, rightArrowEnabled } =
+    checkArrowsAvailability(question);
+  const previousQuestion = () => changeQuestions(-1, question, year);
+  const nextQuestion = () => changeQuestions(1, question, year);
+  const hasUnrenderedImages = checkUnrenderedImages(imageSizes, questionData);
 
   return (
     <ThemedView>
@@ -99,7 +101,8 @@ export default function Question() {
         <>
           <View className="absolute right-4 bottom-4 flex flex-row gap-2 z-10">
             <Button
-              onPress={() => changeQuestions(-1)}
+              disabled={!leftArrowEnabled}
+              onPress={() => previousQuestion()}
               width={50}
               height={50}
               round
@@ -107,7 +110,8 @@ export default function Question() {
               iconSize={25}
             />
             <Button
-              onPress={() => changeQuestions(1)}
+              disabled={!rightArrowEnabled}
+              onPress={() => nextQuestion()}
               width={50}
               height={50}
               round
@@ -115,11 +119,19 @@ export default function Question() {
               iconSize={25}
             />
           </View>
+          <Modal
+            year={year}
+            question={question}
+            language={language}
+            setVisible={setModalVisible}
+            visible={modalVisible}
+          />
           <ScrollView className="px-6">
             {questionData && (
               <>
                 <ThemedText type="title" className="mt-8">
-                  {question}ª questão do ENEM {year} (Caderno azul)
+                  {question.replace('-ingles', '')}ª questão do ENEM {year}{' '}
+                  (Caderno azul)
                 </ThemedText>
                 <HorizontalLine big />
                 {questionData.content && (
@@ -178,8 +190,20 @@ export default function Question() {
                 <ThemedText type="subtitle" fontSize={20}>
                   Resposta
                 </ThemedText>
-                <ThemedText type="label" fontSize={20}>
-                  Item {questionData.answer}
+                <ThemedText lineHeight={25} type="label" fontSize={20}>
+                  Item{' '}
+                  {answerVisible ? (
+                    questionData.answer
+                  ) : (
+                    <ThemedText
+                      lineHeight={25}
+                      fontSize={20}
+                      type="link"
+                      onPress={() => setAnswerVisible(true)}
+                    >
+                      (Exibir)
+                    </ThemedText>
+                  )}
                 </ThemedText>
                 <View className="h-10" />
               </>
@@ -189,14 +213,4 @@ export default function Question() {
       )}
     </ThemedView>
   );
-}
-
-interface Question {
-  content: string;
-  image: string;
-  command: string;
-  alternatives: string[];
-  subjects: string[];
-  answer: string;
-  comment: string;
 }

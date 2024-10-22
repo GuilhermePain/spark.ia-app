@@ -7,7 +7,16 @@ const routes: Route[] = [
   { name: 'flashcard/[subject]/[id]' },
   { name: 'home' },
   { name: 'chat' },
-  { name: 'questions/[year]/[question]' },
+  {
+    name: 'questions/[year]/[question]',
+    options: ({ route }) => {
+      const { animationType } = (route.params as any) || {};
+
+      return {
+        animation: animationType ?? 'simple_push',
+      };
+    },
+  },
   { name: 'questions' },
 ];
 

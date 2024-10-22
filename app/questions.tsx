@@ -1,4 +1,5 @@
-import fetchExams from '@/api/enem/fetchExams';
+import { fetchExams } from '@/api/enem';
+import { exams as default_exams } from '@/constants';
 import {
   Button,
   ScrollView,
@@ -6,19 +7,29 @@ import {
   ThemedView,
   View,
   Loading,
+  HorizontalLine,
 } from '@/components';
-import { router } from 'expo-router';
+import { getAvailableExams } from '@/store/exam';
+import { Href, router } from 'expo-router';
 import { useEffect, useState } from 'react';
 
 export default function Questions() {
   const [loading, setLoading] = useState(true);
-  const [exams, setExams] = useState<string[]>();
+  const [exams, setExams] = useState<string[]>(default_exams);
+  const [noInternet, setNoInternet] = useState(false);
+  const [availableExams, setAvailableExams] = useState<string[]>([]);
 
   useEffect(() => {
-    fetchExams().then((e) => {
-      setExams(e);
-      setLoading(false);
-    });
+    fetchExams()
+      .then((e) => {
+        setExams(e);
+        setLoading(false);
+      })
+      .catch(async () => {
+        setNoInternet(true);
+        setAvailableExams(await getAvailableExams());
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -27,28 +38,33 @@ export default function Questions() {
         <Loading />
       ) : (
         <ScrollView>
-          <ThemedText
-            type="title"
-            className="w-10/12 mx-auto"
-            style={{ fontSize: 36, marginTop: 10, lineHeight: 48 }}
-          >
-            Escolha uma aplicação do ENEM
-          </ThemedText>
-          {exams?.map((e, ind) => {
+          <View className="w-10/12 mx-auto">
+            <ThemedText
+              type="title"
+              style={{ fontSize: 32, marginTop: 10, lineHeight: 48 }}
+            >
+              Escolha uma aplicação do ENEM
+            </ThemedText>
+            <HorizontalLine big />
+          </View>
+          {exams?.map((exam, ind) => {
             return (
               <View
                 key={ind}
-                className="border-2 dark:border-gray-600 border-gray-300 w-10/12 mx-auto h-32 rounded-2xl mt-4 flex-row justify-around "
+                className="dark:bg-slate-700 bg-white w-10/12 mx-auto h-28 shadow-md shadow-gray-700 rounded-2xl mt-4 flex-row justify-around "
               >
                 <ThemedText
                   style={{ lineHeight: 40 }}
                   type="title"
                   className="my-auto ml-4"
                 >
-                  {e}
+                  {exam}
                 </ThemedText>
                 <Button
-                  onPress={() => router.navigate('/questions/' + e + '/1')}
+                  disabled={noInternet && !availableExams.includes(exam)}
+                  onPress={() =>
+                    router.navigate(('/questions/' + exam + '/1') as Href)
+                  }
                   textSize={22}
                   className="my-auto"
                   title="Ver questões"

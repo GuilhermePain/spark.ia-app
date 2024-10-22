@@ -1,5 +1,5 @@
 import { useColorScheme } from 'react-native';
-export function useThemeMascot(inverted?: boolean) {
+export default function useThemedMascot(inverted?: boolean) {
   const darkMode = useColorScheme();
 
   if (inverted !== undefined) {

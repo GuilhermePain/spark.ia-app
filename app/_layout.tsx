@@ -4,17 +4,21 @@ import { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import '../global.css';
 import { Header } from '@/components';
-import SCREEN_OPTIONS from '@/constants/ScreenOptions';
-import FONTS from '@/constants/Fonts';
+import { screen_options, fonts } from '@/constants';
 import routes from '@/router/routes';
 import Constants from 'expo-constants';
+import { useThemeColor } from '@/hooks';
+import { setBackgroundColorAsync } from 'expo-navigation-bar';
 
 function RootLayout() {
-  const [loaded, error] = useFonts(FONTS);
+  const [loaded, error] = useFonts(fonts);
+  const headerBackgroundColor = useThemeColor('foreground');
+  const navigationBarColor = useThemeColor('navbar');
+  setBackgroundColorAsync(navigationBarColor);
 
   useEffect(() => {
     if (loaded || error) {
-      SplashScreen.hideAsync();
+      setTimeout(() => SplashScreen.hideAsync(), 1000);
     }
   }, [loaded, error]);
 
@@ -24,9 +28,13 @@ function RootLayout() {
 
   return (
     <Stack
+      initialRouteName="login"
       screenOptions={{
         headerTitle: (props) => <Header {...props} />,
-        ...SCREEN_OPTIONS,
+        headerStyle: {
+          backgroundColor: headerBackgroundColor,
+        },
+        ...screen_options,
       }}
     >
       {routes.map(({ name, options }, index) => (

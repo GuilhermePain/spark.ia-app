@@ -7,10 +7,9 @@ import {
   Button,
   TypeWriter,
 } from '@/components';
-import { useThemeColor } from '@/hooks/useThemeColor';
-import { router, useLocalSearchParams, useNavigation } from '@/router';
-import { subjectTranslations } from '@/constants/SubjectNames';
-import { flashcards } from '@/constants/Flashcards';
+import { useThemeColor } from '@/hooks';
+import { Href, router, useLocalSearchParams, useNavigation } from '@/router';
+import { subject_translations, flashcards } from '@/constants';
 import { Subject } from '@/types';
 import { getTypewriterStyle } from './styles';
 
@@ -28,12 +27,12 @@ export default function Flashcard() {
   }[];
 
   if (subject) {
-    navigation.setOptions({ title: subjectTranslations[subject.toString()] });
+    navigation.setOptions({ title: subject_translations[subject.toString()] });
   }
 
   const goToNext = () => {
     if (id >= subjectFlashcards.length - 1) router.back();
-    else router.replace({ pathname: `/flashcard/${subject}/${id + 1}` });
+    else router.replace(`/flashcard/${subject}/${id + 1}` as Href);
   };
 
   return (

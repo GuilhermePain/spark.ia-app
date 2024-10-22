@@ -1,2 +1,6 @@
 import Subject from './subject';
-export { Subject };
+import Question from './question';
+import ImageSize from './imageSize';
+import ExamData from './examData';
+
+export { Subject, Question, ImageSize, ExamData };
