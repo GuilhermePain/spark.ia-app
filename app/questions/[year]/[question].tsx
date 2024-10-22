@@ -3,29 +3,30 @@ import { Dimensions } from 'react-native';
 import { useEffect, useState } from 'react';
 import {
   Button,
+  Header,
   HorizontalLine,
   Image,
   Loading,
+  Modal,
   ScrollView,
   ThemedText,
   ThemedView,
   View,
 } from '@/components';
 import { useLocalSearchParams } from 'expo-router';
-import {
-  faArrowLeft,
-  faArrowRight,
-  faEye,
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { getSize } from '@/components/Image';
 import { ImageSize } from '@/types';
 import checkUnrenderedImages from './checkUnrenderedImages';
 import changeQuestions from './changeQuestions';
 import loadQuestion from './loadQuestion';
 import checkArrowsAvailability from './checkArrowsAvailability';
+import { useNavigation } from '@/router';
+import { HeaderProps } from '@/components/Header';
 
 export default function Question() {
   const params = useLocalSearchParams();
+  const navigation = useNavigation();
 
   const year = params.year as string;
   const question = params.question as string;
@@ -39,6 +40,8 @@ export default function Question() {
   const [imageLoadFailed, setImageLoadFailed] = useState(false);
   const windowWidth = Dimensions.get('window').width;
   const [answerVisible, setAnswerVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const language = question.includes('ingles') ? 'inglês' : 'espanhol';
 
   const processQuestionData = (data: QuestionType) => {
     if (data.alternatives[0].includes('https://')) {
@@ -72,8 +75,17 @@ export default function Question() {
   };
 
   useEffect(() => {
+    navigation.setOptions({
+      headerTitle: (props: HeaderProps) => (
+        <Header
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          {...props}
+        />
+      ),
+    });
     loadQuestion(processQuestionData, year, question);
-  }, []);
+  }, [setModalVisible]);
 
   const { leftArrowEnabled, rightArrowEnabled } =
     checkArrowsAvailability(question);
@@ -107,11 +119,19 @@ export default function Question() {
               iconSize={25}
             />
           </View>
+          <Modal
+            year={year}
+            question={question}
+            language={language}
+            setVisible={setModalVisible}
+            visible={modalVisible}
+          />
           <ScrollView className="px-6">
             {questionData && (
               <>
                 <ThemedText type="title" className="mt-8">
-                  {question}ª questão do ENEM {year} (Caderno azul)
+                  {question.replace('-ingles', '')}ª questão do ENEM {year}{' '}
+                  (Caderno azul)
                 </ThemedText>
                 <HorizontalLine big />
                 {questionData.content && (

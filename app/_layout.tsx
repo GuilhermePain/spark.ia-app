@@ -28,6 +28,7 @@ function RootLayout() {
 
   return (
     <Stack
+      initialRouteName="home"
       screenOptions={{
         headerTitle: (props) => <Header {...props} />,
         headerStyle: {

@@ -1,9 +1,21 @@
-import { Picker as PickerBase } from '@react-native-picker/picker';
+import {
+  Picker as PickerBase,
+  PickerItemProps,
+} from '@react-native-picker/picker';
+import View from '../View';
 
 export default function Picker(props: PickerProps) {
-  return <PickerBase {...props} />;
+  return (
+    <View className="bg-slate-100 overflow-hidden rounded-lg shadow-lg">
+      <PickerBase
+        itemStyle={{ fontWeight: 600 }}
+        style={{ height: 47, marginTop: -6 }}
+        {...props}
+      />
+    </View>
+  );
 }
 
-Picker.Item = PickerBase.Item;
+Picker.Item = (props: PickerItemProps) => <PickerBase.Item {...props} />;
 
 type PickerProps = React.ComponentProps<typeof PickerBase>;

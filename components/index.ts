@@ -20,6 +20,8 @@ import Loading from './Loading';
 import ErrorBoundary from './ErrorBoundary';
 import PressableCard from './PressableCard';
 import Picker from "./Picker";
+import Modal from "./Modal";
+import BlurView from "./BlurView";
 
 export {
   Button,
@@ -43,5 +45,7 @@ export {
   Loading,
   ErrorBoundary,
   PressableCard,
-  Picker
+  Picker,
+  Modal,
+  BlurView
 };

@@ -6,10 +6,11 @@ const useGetStyling = () => {
   const backButtonShown = router.canGoBack();
   const textColor = useThemeColor('text-2');
 
-  const viewClassName = 'flex flex-row p-2';
+  const viewClassName = 'flex flex-row p-2 w-full';
   const imageClassName = 'w-10 h-12 aspect-[7/10] my-2';
   const textClassName = 'ml-4 text-2xl my-auto';
   const touchableOpacityClassName = 'mr-3 z-30';
+  const buttonClassName = 'my-auto ml-auto right-8';
 
   const textStyle = {
     color: textColor,
@@ -24,6 +25,7 @@ const useGetStyling = () => {
     textClassName,
     viewClassName,
     touchableOpacityClassName,
+    buttonClassName,
   };
 };
 
