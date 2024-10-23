@@ -1,11 +1,12 @@
 import HorizontalLine from '../HorizontalLine';
-import BlurView from '../BlurView';
 import View from '../View';
 import ThemedText from '../ThemedText';
 import Button from '../Button';
 import Picker from '../Picker';
 import { useEffect, useState } from 'react';
 import { router } from '@/router';
+import { parseQuestion } from '@/functions';
+import { storeLanguage } from '@/store/language';
 
 export default function Modal(props: ModalProps) {
   const { visible, setVisible, language, question, year } = props;
@@ -48,12 +49,12 @@ export default function Modal(props: ModalProps) {
             <Picker.Item label="Espanhol" value="espanhol" />
             <Picker.Item label="Inglês" value="inglês" />
           </Picker>
-          <ThemedText className="mt-2 mb-1" type="label">
+          <ThemedText className="mt-4 mb-1" type="label">
             Questão
           </ThemedText>
           <Picker
             onValueChange={(val: any) => setQuestion(val)}
-            selectedValue={parseInt(selectedQuestion)}
+            selectedValue={parseInt(selectedQuestion ?? '1')}
           >
             {Array.from({ length: 180 }).map((_, ind) => {
               return (
@@ -67,15 +68,17 @@ export default function Modal(props: ModalProps) {
           </Picker>
           <Button
             onPress={() => {
-              let q: number | string =
-                parseInt(selectedQuestion.toString().replace('-ingles', '')) +
-                1;
-
-              if (selectedLanguage === 'inglês' && selectedQuestion && q <= 5) {
-                q = `${q}-ingles`;
+              storeLanguage(selectedLanguage as 'inglês' | 'espanhol');
+              if (selectedQuestion !== null && selectedLanguage) {
+                const q = parseQuestion(
+                  selectedQuestion,
+                  year,
+                  selectedLanguage,
+                  true
+                );
+                router.replace(`/questions/${year}/${q}`);
+                setVisible(false);
               }
-              router.replace(`/questions/${year}/${q}`);
-              setVisible(false);
             }}
             className="mt-6 mx-auto"
             width={200}

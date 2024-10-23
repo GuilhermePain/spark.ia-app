@@ -45,9 +45,11 @@ export default function Header(props: HeaderProps) {
       </Text>
       {questionOptionsVisible && (
         <Button
-          onPress={() =>
-            props.setModalVisible && props.setModalVisible(!props.modalVisible)
-          }
+          height={40}
+          onPress={() => {
+            if (props.setModalVisible)
+              props.setModalVisible(!props.modalVisible);
+          }}
           className={buttonClassName}
           icon={faBars}
         />

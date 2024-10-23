@@ -6,10 +6,10 @@ import View from '../View';
 
 export default function Picker(props: PickerProps) {
   return (
-    <View className="bg-slate-100 overflow-hidden rounded-lg shadow-lg">
+    <View className="bg-slate-200 overflow-hidden rounded-lg shadow-lg">
       <PickerBase
-        itemStyle={{ fontWeight: 600, fontFamily: "Medium" }}
-        style={{ height: 47, marginTop: -6, fontFamily: "Medium" }}
+        itemStyle={{ fontWeight: 600, fontFamily: 'Medium' }}
+        style={{ height: 47, marginTop: -6, fontFamily: 'Medium' }}
         {...props}
       />
     </View>

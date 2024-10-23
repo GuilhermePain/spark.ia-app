@@ -9,9 +9,10 @@ import {
   Loading,
   HorizontalLine,
 } from '@/components';
-import { getAvailableExams } from '@/store/exam';
+import { clearSpecificExamData, getAvailableExams } from '@/store/exam';
 import { Href, router } from 'expo-router';
 import { useEffect, useState } from 'react';
+import { clearStoredLanguage } from '@/store/language';
 
 export default function Questions() {
   const [loading, setLoading] = useState(true);
@@ -62,9 +63,11 @@ export default function Questions() {
                 </ThemedText>
                 <Button
                   disabled={noInternet && !availableExams.includes(exam)}
-                  onPress={() =>
-                    router.navigate(('/questions/' + exam + '/1') as Href)
-                  }
+                  onPress={() => {
+                    if (!noInternet) clearSpecificExamData(exam);
+                    clearStoredLanguage();
+                    router.navigate(('/questions/' + exam + '/1') as Href);
+                  }}
                   textSize={22}
                   className="my-auto"
                   title="Ver questões"

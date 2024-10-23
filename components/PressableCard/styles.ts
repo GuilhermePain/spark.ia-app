@@ -10,7 +10,7 @@ const useGetStyling = () => {
   const imageClassName = 'w-10 h-12 aspect-[7/10] my-2';
   const textClassName = 'ml-4 text-2xl my-auto';
   const touchableOpacityClassName = 'mr-3 z-30';
-  const buttonClassName = 'my-auto ml-auto right-8';
+  const buttonClassName = 'my-auto ml-auto right-8 aspect-square';
 
   const textStyle = {
     color: textColor,

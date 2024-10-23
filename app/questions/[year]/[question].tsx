@@ -11,10 +11,17 @@ import {
   ScrollView,
   ThemedText,
   ThemedView,
+  TypeWriter,
+  TypeWriterText,
   View,
 } from '@/components';
 import { useLocalSearchParams } from 'expo-router';
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowLeft,
+  faArrowRight,
+  faEyeSlash,
+  faMessage,
+} from '@fortawesome/free-solid-svg-icons';
 import { getSize } from '@/components/Image';
 import { ImageSize } from '@/types';
 import checkUnrenderedImages from './checkUnrenderedImages';
@@ -23,14 +30,18 @@ import loadQuestion from './loadQuestion';
 import checkArrowsAvailability from './checkArrowsAvailability';
 import { useNavigation } from '@/router';
 import { HeaderProps } from '@/components/Header';
+import { getStoredLanguage } from '@/store/language';
+import { parseQuestion } from '@/functions';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { useThemeColor } from '@/hooks';
 
 export default function Question() {
   const params = useLocalSearchParams();
   const navigation = useNavigation();
 
   const year = params.year as string;
-  const question = params.question as string;
 
+  const [question, setQuestion] = useState(params.question as string);
   const [loading, setLoading] = useState(true);
   const [questionData, setQuestionData] = useState<QuestionType>();
   const [imageSizes, setImageSizes] = useState<ImageSize[]>([]);
@@ -41,7 +52,9 @@ export default function Question() {
   const windowWidth = Dimensions.get('window').width;
   const [answerVisible, setAnswerVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const language = question.includes('ingles') ? 'inglês' : 'espanhol';
+  const [language, setLanguage] = useState<'inglês' | 'espanhol'>(
+    question.includes('ingles') ? 'inglês' : 'espanhol'
+  );
 
   const processQuestionData = (data: QuestionType) => {
     if (data.alternatives[0].includes('https://')) {
@@ -84,7 +97,13 @@ export default function Question() {
         />
       ),
     });
-    loadQuestion(processQuestionData, year, question);
+    getStoredLanguage().then((storedLanguage) => {
+      if (storedLanguage) {
+        setLanguage(storedLanguage);
+        setQuestion(parseQuestion(question, year, language) as string);
+      }
+      loadQuestion(processQuestionData, year, question);
+    });
   }, [setModalVisible]);
 
   const { leftArrowEnabled, rightArrowEnabled } =
@@ -92,6 +111,8 @@ export default function Question() {
   const previousQuestion = () => changeQuestions(-1, question, year);
   const nextQuestion = () => changeQuestions(1, question, year);
   const hasUnrenderedImages = checkUnrenderedImages(imageSizes, questionData);
+
+  const iconColor = useThemeColor('text');
 
   return (
     <ThemedView>
@@ -205,7 +226,44 @@ export default function Question() {
                     </ThemedText>
                   )}
                 </ThemedText>
-                <View className="h-10" />
+
+                {questionData.comment && (
+                  <>
+                    {answerVisible ? (
+                      <>
+                        <ThemedText
+                          className="mt-2 gap-4"
+                          type="title"
+                          fontSize={26}
+                        >
+                          <FontAwesomeIcon
+                            size={16}
+                            icon={faMessage}
+                            color={iconColor}
+                          />{' '}
+                          Comentário da questão
+                        </ThemedText>
+                        <TypeWriterText faster content={questionData.comment} />
+                      </>
+                    ) : (
+                      <>
+                        <ThemedText
+                          className="mt-2 gap-4"
+                          type="title"
+                          fontSize={26}
+                        >
+                          <FontAwesomeIcon
+                            size={18}
+                            icon={faEyeSlash}
+                            color={iconColor}
+                          />{' '}
+                          (Comentário oculto)
+                        </ThemedText>
+                      </>
+                    )}
+                  </>
+                )}
+                <View style={{ height: 60 }} />
               </>
             )}
           </ScrollView>

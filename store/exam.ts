@@ -25,3 +25,11 @@ export const getAvailableExams = async () => {
 
   return data ? Object.keys(data) : [];
 };
+
+export const clearSpecificExamData = async (exam: string) => {
+  const data = await getAllExamData();
+  try {
+    delete data[exam];
+    storeExamData(exam, data);
+  } catch {}
+};
